@@ -7,7 +7,7 @@ DATA_FILE = "data/file_rootbeer_touches_by_author.csv"  # change if repo changes
 OUT_PNG = "data/file_rootbeer_scatterplot.png"
 
 def parse_date(d):
-    # GitHub date looks like: 2020-01-01T12:34:56Z
+    # date looks like: 2020-01-01T12:34:56Z
     # Convert to datetime
     return datetime.strptime(d, "%Y-%m-%dT%H:%M:%SZ")
 
@@ -24,7 +24,7 @@ with open(DATA_FILE, "r", encoding="utf-8") as f:
         touches.append((filename, author, parse_date(date_str)))
 
 if len(touches) == 0:
-    print("No touches found. Did you run Alvin_authorsFileTouches.py first?")
+    print("No touches found. Run <name>_authorsFileTouches.py first.")
     exit(0)
 
 # Find earliest date to compute week index

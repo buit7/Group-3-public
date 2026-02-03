@@ -7,10 +7,7 @@ from datetime import datetime
 if not os.path.exists("data"):
     os.makedirs("data")
 
-# -----------------------------
-# Define what "source files" are
-# -----------------------------
-# Reasoning: code files only, so ownership/touch patterns reflect code maintenance (not docs/images).
+#src file extns.
 SOURCE_EXTS = [
     ".py", ".java", ".c", ".cpp", ".h",
     ".js", ".ts", ".jsx", ".tsx",
@@ -25,7 +22,7 @@ def is_source_file(filename):
     return False
 
 
-# GitHub Authentication function (same style as your code)
+# GitHub Authentication function
 def github_auth(url, lsttoken, ct):
     jsonData = None
     try:
@@ -43,7 +40,7 @@ def github_auth(url, lsttoken, ct):
 def collect_author_touches(lsttokens, repo):
     ipage = 1
     ct = 0
-    touches = []  # list of tuples: (filename, author, date)
+    touches = []
 
     try:
         while True:
@@ -67,7 +64,7 @@ def collect_author_touches(lsttokens, repo):
                 if shaDetails is None:
                     continue
 
-                # Get author name + date from commit metadata
+                # Get author name + date from commit
                 commitObj = shaDetails.get("commit", {})
                 authorObj = commitObj.get("author", {}) or {}
                 author = authorObj.get("name", "Unknown")
