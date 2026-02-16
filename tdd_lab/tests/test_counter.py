@@ -17,7 +17,7 @@ from src import status
 
 @pytest.fixture()
 def client():
-    """Fixture for Flask test cligit ent"""
+    """Fixture for Flask test client"""
     return app.test_client()
 
 @pytest.mark.usefixtures("client")
