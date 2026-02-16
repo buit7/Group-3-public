@@ -17,7 +17,7 @@ from src import status
 
 @pytest.fixture()
 def client():
-    """Fixture for Flask test client"""
+    """Fixture for Flask test cligit ent"""
     return app.test_client()
 
 @pytest.mark.usefixtures("client")
@@ -29,5 +29,15 @@ class TestCounterEndpoints:
         result = client.post('/counters/foo')
         assert result.status_code == status.HTTP_201_CREATED
 
-    
+    # ===========================
+    # Test: Delete a Counter
+    # Author: Truc Bui
+    # Date: 2026-02-15
+    # Description: Ensure that a counter can be deleted
+    # ===========================
+    def test_delete_counter(self, client):
+        """Test should delete a counter"""
+        result = client.post('/counters/foo')   # Create a counter
+        result = client.delete('/counters/foo') # Delete the counter
+        assert result.status_code == status.HTTP_204_NO_CONTENT
 
