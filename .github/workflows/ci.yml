@@ -45,7 +45,7 @@ jobs:
           pip install -r requirements.txt
 
       - name: Run Tests with Pytest
-        run: pytest --cov=src
+        run: pytest
 
   coverage:
     runs-on: ubuntu-latest  # Use the latest Ubuntu runner
