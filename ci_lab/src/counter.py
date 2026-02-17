@@ -64,7 +64,7 @@ def get_total_counters():
     total = sum(COUNTERS.values())
     return jsonify({"total": total}), HTTPStatus.OK
 
-@app.route('/counters/top/<int:n>', methods=['GET'])
+@app.route('/counters/top/<n>', methods=['GET'])
 def get_top_n_counters(n):
     """Retrieve the top N highest counters"""
     if not COUNTERS:
@@ -81,7 +81,7 @@ def get_top_n_counters(n):
 
     return jsonify(top_n), HTTPStatus.OK
 
-@app.route('/counters/bottom/<int:n>', methods=['GET'])
+@app.route('/counters/bottom/<n>', methods=['GET'])
 def get_bottom_n_counters(n):
     """Retrieve the bottom N lowest counters"""
     if not COUNTERS:
