@@ -91,6 +91,23 @@ class TestCounterEndpoints:
         response = client.patch('/counters/test_counter')
         assert response.status_code == HTTPStatus.METHOD_NOT_ALLOWED
     
+
+    """Test cases for CI Lab"""
+
+    # ===========================
+    # Test: Set counter to a non-integer value
+    # Author: Truc Bui
+    # Date: 2026-02-16
+    # Description: Ensure that setting a counter to a non-integer value fails
+    # ===========================
+    def test_set_counter_invalid_value(self, client):
+        """Test should return BAD_REQUEST if trying to set a counter to a non-integer"""
+        client.post('/counters/invalidValue')
+        response = client.put('/counters/invalidValue/set/stringValue')
+
+        assert response.status_code == HTTPStatus.BAD_REQUEST
+        assert response.get_json() == {"error": "Invalid counter value"}
+
     
     """Test cases for Extended Counter API"""
 
