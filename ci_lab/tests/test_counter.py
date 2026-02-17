@@ -129,7 +129,7 @@ class TestCounterEndpoints:
     # Description: Ensure that 
     # ===========================
     def test_top_bottom_invalid_n_counters(self, client):
-        """Test should return HTTPStatus.NOT_FOUND both times when n is not an integer"""
+        """Test should return HTTPStatus.BAD_REQUEST both times if n is not an integer"""
         client.post('/counters/a')
         client.post('/counters/b')
         client.post('/counters/c')
@@ -143,11 +143,11 @@ class TestCounterEndpoints:
         responseTop = client.get('/counters/top/stringValue')
         responseBot = client.get('/counters/bottom/stringValue')
 
-        assert responseTop.status_code == HTTPStatus.OK
-        #assert responseTop.get_json() == 
+        assert responseTop.status_code == HTTPStatus.BAD_REQUEST
+        assert responseTop.get_json() == {"error": "Invalid get top value"}
 
-        assert responseBot.status_code == HTTPStatus.OK
-        #assert responseBot.get_json() == 0  
+        assert responseBot.status_code == HTTPStatus.BAD_REQUEST
+        assert responseBot.get_json() == {"error": "Invalid get bottom value"}
 
     
     """Test cases for Extended Counter API"""

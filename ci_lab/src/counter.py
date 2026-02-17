@@ -69,12 +69,15 @@ def get_top_n_counters(n):
     """Retrieve the top N highest counters"""
     if not COUNTERS:
         return jsonify({"error": "No counters available"}), HTTPStatus.NOT_FOUND
-
+    try:
+        N = int(n)  # Convert n to an integer
+    except ValueError:
+        return jsonify({"error": "Invalid get top value"}), HTTPStatus.BAD_REQUEST
     # Sort by value in descending order
     sorted_items = sorted(COUNTERS.items(), key=lambda item: item[1], reverse=True)
 
     # Get top N items
-    top_n = dict(sorted_items[:n])
+    top_n = dict(sorted_items[:N])
 
     return jsonify(top_n), HTTPStatus.OK
 
@@ -83,10 +86,14 @@ def get_bottom_n_counters(n):
     """Retrieve the bottom N lowest counters"""
     if not COUNTERS:
         return jsonify({"error": "No counters available"}), HTTPStatus.NOT_FOUND
+    try:
+        N = int(n)  # Convert n to an integer
+    except ValueError:
+        return jsonify({"error": "Invalid get bottom value"}), HTTPStatus.BAD_REQUEST
     # Sort by value in ascending order (to get the lowest)
     sorted_items = sorted(COUNTERS.items(), key=lambda item: item[1])
     # Get bottom N items
-    bottom_n = dict(sorted_items[:n])
+    bottom_n = dict(sorted_items[:N])
     return jsonify(bottom_n), HTTPStatus.OK
 
 @app.route('/counters/<name>/set/<value>', methods=['PUT'])
