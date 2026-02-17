@@ -91,6 +91,64 @@ class TestCounterEndpoints:
         response = client.patch('/counters/test_counter')
         assert response.status_code == HTTPStatus.METHOD_NOT_ALLOWED
     
+
+    """Test cases for CI Lab"""
+
+    # ===========================
+    # Test: Set counter to a non-integer value
+    # Author: Truc Bui
+    # Date: 2026-02-16
+    # Description: Ensure that setting a counter to a non-integer value fails
+    # ===========================
+    def test_set_counter_invalid_value(self, client):
+        """Test should return BAD_REQUEST if trying to set a counter to a non-integer"""
+        client.post('/counters/invalidValue')
+        response = client.put('/counters/invalidValue/set/stringValue')
+
+        assert response.status_code == HTTPStatus.BAD_REQUEST
+        assert response.get_json() == {"error": "Invalid counter value"}
+
+    # ===========================
+    # Test: Set value of a non-existent counter
+    # Author: Truc Bui
+    # Date: 2026-02-16
+    # Description: Ensure that setting a non-existent counter's value fails
+    # ===========================
+    def test_set_non_existing_counter_value(self, client):
+        """Test should return NOT_FOUND if trying to set a non-existent counter's value"""
+        response = client.put('/counters/nonExistent/set/5')
+
+        assert response.status_code == HTTPStatus.NOT_FOUND
+        assert response.get_json() == {"error": f"Counter 'nonExistent' not found"}
+
+    # ===========================
+    # Test: Retrieve the top n counter(s) & the bottom n counter(s)
+    #       with n being an invalid, non-integer value
+    # Author: Truc Bui
+    # Date: 2026-02-16
+    # Description: Ensure that 
+    # ===========================
+    def test_top_bottom_invalid_n_counters(self, client):
+        """Test should return HTTPStatus.BAD_REQUEST both times if n is not an integer"""
+        client.post('/counters/a')
+        client.post('/counters/b')
+        client.post('/counters/c')
+        client.put('/counters/a')   # incr a
+        client.put('/counters/b')   # incr b
+        client.put('/counters/b')   # incr b
+        client.put('/counters/c')   # incr c
+        client.put('/counters/c')   # incr c
+        client.put('/counters/c')   # incr c
+
+        responseTop = client.get('/counters/top/stringValue')
+        responseBot = client.get('/counters/bottom/stringValue')
+
+        assert responseTop.status_code == HTTPStatus.BAD_REQUEST
+        assert responseTop.get_json() == {"error": "Invalid get top value"}
+
+        assert responseBot.status_code == HTTPStatus.BAD_REQUEST
+        assert responseBot.get_json() == {"error": "Invalid get bottom value"}
+
     
     """Test cases for Extended Counter API"""
 
