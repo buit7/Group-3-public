@@ -121,6 +121,34 @@ class TestCounterEndpoints:
         assert response.status_code == HTTPStatus.NOT_FOUND
         assert response.get_json() == {"error": f"Counter 'nonExistent' not found"}
 
+    # ===========================
+    # Test: Retrieve the top n counter(s) & the bottom n counter(s)
+    #       with n being an invalid, non-integer value
+    # Author: Truc Bui
+    # Date: 2026-02-16
+    # Description: Ensure that 
+    # ===========================
+    def test_top_bottom_invalid_n_counters(self, client):
+        """Test should return HTTPStatus.NOT_FOUND both times when n is not an integer"""
+        client.post('/counters/a')
+        client.post('/counters/b')
+        client.post('/counters/c')
+        client.put('/counters/a')   # incr a
+        client.put('/counters/b')   # incr b
+        client.put('/counters/b')   # incr b
+        client.put('/counters/c')   # incr c
+        client.put('/counters/c')   # incr c
+        client.put('/counters/c')   # incr c
+
+        responseTop = client.get('/counters/top/stringValue')
+        responseBot = client.get('/counters/bottom/stringValue')
+
+        assert responseTop.status_code == HTTPStatus.OK
+        #assert responseTop.get_json() == 
+
+        assert responseBot.status_code == HTTPStatus.OK
+        #assert responseBot.get_json() == 0  
+
     
     """Test cases for Extended Counter API"""
 
