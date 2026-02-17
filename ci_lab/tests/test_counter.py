@@ -108,6 +108,19 @@ class TestCounterEndpoints:
         assert response.status_code == HTTPStatus.BAD_REQUEST
         assert response.get_json() == {"error": "Invalid counter value"}
 
+    # ===========================
+    # Test: Set value of a non-existent counter
+    # Author: Truc Bui
+    # Date: 2026-02-16
+    # Description: Ensure that setting a non-existent counter's value fails
+    # ===========================
+    def test_set_non_existing_counter_value(self, client):
+        """Test should return NOT_FOUND if trying to set a non-existent counter's value"""
+        response = client.put('/counters/nonExistent/set/5')
+
+        assert response.status_code == HTTPStatus.NOT_FOUND
+        assert response.get_json() == {"error": f"Counter 'nonExistent' not found"}
+
     
     """Test cases for Extended Counter API"""
 
